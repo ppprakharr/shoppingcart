@@ -306,7 +306,11 @@
                                                 <a href="page-account.html"><i class="fi fi-rs-settings-sliders mr-10"></i>Setting</a>
                                             </li>
                                             <li>
-                                                <a href="page-login.html"><i class="fi fi-rs-sign-out mr-10"></i>Sign out</a>
+                                                {% if request.user.is_authenticated%}
+                                                <a href="{%url 'userauths:sign-out'%}"><i class="fi fi-rs-sign-out mr-10"></i>Sign out</a>
+                                                {% else %}
+                                                <a href="{%url 'userauths:sign-in'%}"><i class="fi fi-rs-sign-out mr-10"></i>Sign In</a>
+                                                {% endif %}
                                             </li>
                                         </ul>
                                     </div>

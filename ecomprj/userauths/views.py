@@ -3,6 +3,7 @@ from userauths.forms import UserRegistrationForm
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.conf import settings
+from django.contrib.auth import logout
 User = settings.AUTH_USER_MODEL
 
 
@@ -51,4 +52,10 @@ def login_view(request):
 
     }
     return render(request,'userauths/sign-in.html',context)
+
+def logout_view(request):
+    logout(request)
+    messages.success(request, f"You are succesfully logged out")
+    return redirect('userauths:sign-in')
+
         
