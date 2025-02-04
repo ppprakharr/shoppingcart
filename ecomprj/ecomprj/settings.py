@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core',
-    'jazzmin'
+    'jazzmin',
+    'userauths',
 ]
 
 MIDDLEWARE = [
@@ -136,3 +137,5 @@ JAZZMIN_SETTINGS={
     'copyright': 'www.test.co.in',
     'site_logo': 'assets/imgs/theme/loading.gif'
 }
+
+AUTH_USER_MODEL = 'userauths.User'
