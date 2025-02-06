@@ -37,7 +37,7 @@ class Category(models.Model):
         verbose_name_plural = "Categories"
     
     def category_image(self):
-        return mark_safe('img src="%s" width="50" height="50" />'%(self.image.url))
+        return mark_safe(f'<img src="{self.image.url}" width="50" height="50" />')
     
     def __str__(self):
         return self.title
@@ -64,7 +64,7 @@ class Vendor(models.Model):
         verbose_name_plural = "Vendors"
     
     def vendor_image(self):
-        return mark_safe('img src="%s" width="50" height="50" />'%(self.image.url))
+        return mark_safe(f'<img src="{self.image.url}" width="50" height="50" />')
     
     def __str__(self):
         return self.title
@@ -79,7 +79,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=999999,decimal_places=2,default='1.99')
     old_price = models.DecimalField(max_digits=999999,decimal_places=2,default='1.99')
     specifications = models.TextField(null=True,blank=True)
-    tags = models.ForeignKey(Tags,on_delete=models.SET_NULL, null=True)
+    # tags = models.ForeignKey(Tags,on_delete=models.SET_NULL, null=True)
     product_status= models.CharField(choices=STATUS,max_length=10,default="in_review")
     status = models.BooleanField(default=True)
     in_stock = models.BooleanField(default=True)
@@ -92,7 +92,7 @@ class Product(models.Model):
     class Meta:
         verbose_name_plural = 'Products'
     def product_image(self):
-        return mark_safe('img src="%s" width="50" height="50" />'%(self.image.url))
+        return mark_safe(f'<img src="{self.image.url}" width="50" height="50" />')
     
     def get_percentage(self):
         new_price = (self.price - self.old_price)*100
@@ -126,7 +126,7 @@ class CartOrder(models.Model):
 
 class CartOrderItems(models.Model):
     order = models.ForeignKey(CartOrder,on_delete=models.CASCADE)
-    product_status = models.CharField(max_length=200)
+    invoice_no = models.CharField(max_length=200)
     item=models.CharField(max_length=200)
     image=models.CharField(max_length=200)
     qty=models.IntegerField(default=0)
@@ -136,7 +136,7 @@ class CartOrderItems(models.Model):
     class Meta:
         verbose_name_plural = 'Cart order Items'
     def order_image(self):
-        return mark_safe('<img src="/media/%s" width="50" height="50" />' %(self.image))
+        return mark_safe(f'<img src="{self.image.url}" width="50" height="50" />')
     
 class ProductReview(models.Model):
     user=models.ForeignKey(User,on_delete=models.SET_NULL,null=True)
