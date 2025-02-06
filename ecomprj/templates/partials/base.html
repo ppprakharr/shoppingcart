@@ -17,6 +17,7 @@
     <!-- Template CSS -->
     <link rel="stylesheet" href="{% static 'assets/css/plugins/animate.min.css' %}" />
     <link rel="stylesheet" href="{% static 'assets/css/main.css' %}" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script
 </head>
 
 <body>
@@ -622,6 +623,18 @@
                         </div>
                     </div>
                 </div>
+                {% if messages %}
+                {% for message in messages%}
+                <div class="alert alert-{{message.tags}}">
+                    <strong>{{message}}</strong>
+                </div>
+                {%endfor%}
+                {% endif %}
+                <script>
+                    setTimeout (()=>{
+                        $(".alert").alert("close");
+                    },3000)
+                </script>
             </div>
         </div>
     </header>
