@@ -72,6 +72,7 @@ class Vendor(models.Model):
 class Product(models.Model):
     pid = ShortUUIDField(max_length=20, length=10,unique=True,alphabet='abcdefghij1234567890')
     title = models.CharField(max_length=100,default='this is the prod title')
+    vendor = models.ForeignKey(Vendor, on_delete=models.SET_NULL,null=True)
     image = models.ImageField(upload_to=user_directory_path,default='product.jpg')
     description = models.TextField(default='This is the product',null=True,blank=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
@@ -95,7 +96,7 @@ class Product(models.Model):
         return mark_safe(f'<img src="{self.image.url}" width="50" height="50" />')
     
     def get_percentage(self):
-        new_price = (self.price - self.old_price)*100
+        new_price = ((self.price - self.old_price)/(self.old_price))*100
         return new_price
 
     
