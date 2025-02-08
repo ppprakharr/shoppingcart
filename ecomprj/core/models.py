@@ -76,7 +76,7 @@ class Product(models.Model):
     image = models.ImageField(upload_to=user_directory_path,default='product.jpg')
     description = models.TextField(default='This is the product',null=True,blank=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, related_name='products')
     price = models.DecimalField(max_digits=999999,decimal_places=2,default='1.99')
     old_price = models.DecimalField(max_digits=999999,decimal_places=2,default='1.99')
     specifications = models.TextField(null=True,blank=True)
