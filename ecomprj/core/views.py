@@ -38,4 +38,13 @@ def vendor_list_view(request):
         'vendors':vendors
     }
     return render (request,'core/vendor-list.html',context)
+
+def vendor_details_view(request,vid):
+    vendor = Vendor.objects.get(vid=vid)
+    products = Product.objects.filter(product_status='published',vendor=vendor)
+    context={
+        'products':products,
+        'vendor':vendor
+    }
+    return render(request,'core/vendor-details-view.html',context)
 # Create your views here.
