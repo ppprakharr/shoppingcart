@@ -51,9 +51,12 @@ def vendor_details_view(request,vid):
 def product_details_view(request,pid):
     product = Product.objects.get(pid=pid)
     product_images = product.p_image.all()
+    products  = Product.objects.filter(category = product.category).exclude(pid=pid)
     context = {
         'product':product,
-        'product_images':product_images
+        'product_images':product_images,
+        'related_products':products
+
     }
     return render(request,'core/product-details-page.html',context)
 # Create your views here.

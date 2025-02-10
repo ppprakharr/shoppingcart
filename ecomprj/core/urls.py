@@ -9,5 +9,5 @@ urlpatterns=[
     path('category/',views.category_list_view,name='category-list'),
     path('category/<cid>',views.category_product_list_view,name='category_product_list_view'),
     path('vendors/',views.vendor_list_view,name='vendor-list-view'),
-    path('vendors/<vid>', views.vendor_details_view,name='vendor-details-page')
+    path('vendors/<vid>', views.vendor_details_view,name='vendor-details-page'),
 ]
