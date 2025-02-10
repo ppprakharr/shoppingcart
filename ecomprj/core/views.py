@@ -47,4 +47,13 @@ def vendor_details_view(request,vid):
         'vendor':vendor
     }
     return render(request,'core/vendor-details-view.html',context)
+
+def product_details_view(request,pid):
+    product = Product.objects.get(pid=pid)
+    product_images = product.p_image.all()
+    context = {
+        'product':product,
+        'product_images':product_images
+    }
+    return render(request,'core/product-details-page.html',context)
 # Create your views here.

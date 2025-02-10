@@ -3,7 +3,8 @@ from core.models import Product,Vendor,Category,ProductImage,ProductReview,CartO
 def default(request):
     categories = Category.objects.all()
     products = Product.objects.all()
+    address = Address.objects.get(user=request.user)
     return {
          'categories':categories,
-         'products':products
+         'address':address
     }

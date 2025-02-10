@@ -81,11 +81,15 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=999999,decimal_places=2,default='1.99')
     old_price = models.DecimalField(max_digits=999999,decimal_places=2,default='1.99')
     specifications = models.TextField(null=True,blank=True)
+    type= models.CharField(max_length=100,default='Organic',null=True,blank=True)
+    mfd=models.DateTimeField(auto_now_add=False,null=True,blank=True)
+    stock_count = models.CharField(max_length=100,default='10',null=True,blank=True)
+    life=models.CharField(max_length=100,default='100 days',null=True,blank=True)
     # tags = models.ForeignKey(Tags,on_delete=models.SET_NULL, null=True)
     product_status= models.CharField(choices=STATUS,max_length=10,default="in_review")
     status = models.BooleanField(default=True)
     in_stock = models.BooleanField(default=True)
-    featured = models.BooleanField(default=False)
+    featured = models.BooleanField(default=False) 
     digital = models.BooleanField(default=False)
     sku = ShortUUIDField(max_length=10,length=4,unique=True,prefix='sku',alphabet='1234567890')
     date = models.DateTimeField(auto_now_add=True)
@@ -97,7 +101,7 @@ class Product(models.Model):
         return mark_safe(f'<img src="{self.image.url}" width="50" height="50" />')
     
     def get_percentage(self):
-        new_price = ((self.price - self.old_price)/(self.old_price))*100
+        new_price = ((self.old_price - self.price)/(self.old_price))*100
         return new_price
 
     
@@ -106,7 +110,7 @@ class Product(models.Model):
     
 class ProductImage(models.Model):
     images = models.ImageField(upload_to='product-images',default='product.jpg')
-    product = models.ForeignKey(Product,on_delete=models.SET_NULL,null=True)
+    product = models.ForeignKey(Product,related_name='p_image',on_delete=models.SET_NULL,null=True)
     date  = models.DateTimeField(auto_now_add=True)
 
     class Meta:
