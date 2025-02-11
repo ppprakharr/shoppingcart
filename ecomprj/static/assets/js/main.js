@@ -726,3 +726,14 @@
         showItems: 1
     });
 })(jQuery);
+document.addEventListener("DOMContentLoaded", function () {
+    var triggerTabList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tab"]'));
+    triggerTabList.forEach(function (tab) {
+        tab.addEventListener("click", function (event) {
+            event.preventDefault();
+            var tabInstance = new bootstrap.Tab(this);
+            tabInstance.show();
+        });
+    });
+});
+

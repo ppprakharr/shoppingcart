@@ -17,7 +17,7 @@
     <!-- Template CSS -->
     <link rel="stylesheet" href="{% static 'assets/css/plugins/animate.min.css' %}" />
     <link rel="stylesheet" href="{% static 'assets/css/main.css' %}" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script
+    {% comment %} <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> {% endcomment %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 </head>
@@ -1004,26 +1004,67 @@
         </div>
     </div> {% endcomment %}
     <!-- Vendor JS-->
-    <script data-cfasync="false " src="{% static '/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js ' %}"></script>
-    <script src="{% static 'assets/js/vendor/modernizr-3.6.0.min.js ' %}"></script>
-    <script src="{% static 'assets/js/vendor/jquery-3.6.0.min.js ' %}"></script>
-    <script src="{% static 'assets/js/vendor/jquery-migrate-3.3.0.min.js ' %}"></script>
-    <script src="{% static 'assets/js/vendor/bootstrap.bundle.min.js ' %}"></script>
-    <script src="{% static 'assets/js/plugins/slick.js ' %}"></script>
-    <script src="{% static 'assets/js/plugins/jquery.syotimer.min.js ' %}"></script>
-    <script src="{% static 'assets/js/plugins/waypoints.js ' %}"></script>
-    <script src="{% static 'assets/js/plugins/wow.js ' %}"></script>
-    <script src="{% static 'assets/js/plugins/perfect-scrollbar.js ' %}"></script>
-    <script src="{% static 'assets/js/plugins/magnific-popup.js ' %}"></script>
-    <script src="{% static 'assets/js/plugins/select2.min.js ' %}"></script>
-    <script src="{% static 'assets/js/plugins/counterup.js ' %}"></script>
-    <script src="{% static 'assets/js/plugins/jquery.countdown.min.js ' %}"></script>
-    <script src="{% static 'assets/js/plugins/images-loaded.js ' %}"></script>
-    <script src="{% static 'assets/js/plugins/isotope.js ' %}"></script>
-    <script src="{% static 'assets/js/plugins/scrollup.js ' %}"></script>
-    <script src="{% static 'assets/js/plugins/jquery.vticker-min.js ' %}"></script>
-    <script src="{% static 'assets/js/plugins/jquery.theia.sticky.js ' %}"></script>
-    <script src="{% static 'assets/js/plugins/jquery.elevatezoom.js ' %}"></script>
+<!-- Cloudflare Email Decoder (No direct CDN alternative) -->
+<!-- Consider removing this unless needed -->
+
+<!-- Modernizr -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/3.6.0/modernizr.min.js"></script>
+
+<!-- jQuery 3.6.0 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<!-- jQuery Migrate 3.3.0 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.0/jquery-migrate.min.js"></script>
+
+<!-- Bootstrap Bundle -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+
+<!-- Slick Carousel -->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick.css"/>
+<script src="https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick.min.js"></script>
+
+<!-- Syotimer -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/syotimer/2.1.0/jquery.syotimer.min.js"></script>
+
+<!-- Waypoints -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+
+<!-- WOW.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+
+<!-- Perfect Scrollbar -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.8.1/perfect-scrollbar.min.js"></script>
+
+<!-- Magnific Popup -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+
+<!-- Select2 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+<!-- CounterUp -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Counter-Up/1.0/jquery.counterup.min.js"></script>
+
+<!-- jQuery Countdown -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-countdown/2.2.0/jquery.countdown.min.js"></script>
+
+<!-- ImagesLoaded -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js"></script>
+
+<!-- Isotope -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js"></script>
+
+<!-- ScrollUp -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/scrollup/2.4.1/jquery.scrollUp.min.js"></script>
+
+<!-- jQuery vTicker -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-vticker/1.22.0/jquery.vticker.min.js"></script>
+
+<!-- Theia Sticky Sidebar -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/theia-sticky-sidebar/1.5.0/theia-sticky-sidebar.min.js"></script>
+
+<!-- ElevateZoom -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/elevatezoom/3.0.8/jquery.elevatezoom.min.js"></script>
+
     <!-- Template  JS -->
     <script src="{% static 'assets/js/main.js' %}"></script>
     <script src="{% static 'assets/js/shop.js' %}"></script>
