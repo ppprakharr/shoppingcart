@@ -3,7 +3,10 @@ from core.models import Product,Vendor,Category,ProductImage,ProductReview,CartO
 def default(request):
     categories = Category.objects.all()
     products = Product.objects.all()
-    address = Address.objects.get(user=request.user)
+    try:
+          address = Address.objects.get(user=request.user)
+    except:
+         address=None
     return {
          'categories':categories,
          'address':address

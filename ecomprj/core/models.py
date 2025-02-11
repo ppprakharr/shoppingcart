@@ -2,6 +2,7 @@ from django.db import models
 from shortuuid.django_fields import ShortUUIDField
 from django.utils.html import mark_safe
 from userauths.models import User
+from ckeditor_uploader.fields import RichTextUploadingField
 from taggit.managers import TaggableManager
 
 STATUS_CHOICE=(
@@ -50,7 +51,8 @@ class Vendor(models.Model):
     vid = ShortUUIDField(unique=True, prefix="ven",max_length=20, length=10, alphabet='abcdefghi0123456789')
     title = models.CharField(max_length=100)
     image = models.ImageField(upload_to=user_directory_path,default='vendor.jpg')
-    description = models.TextField(null=True, blank=True,default='I am a Vendor')
+    # description = models.TextField(null=True, blank=True,default='I am a Vendor')
+    description = RichTextUploadingField(null=True, blank=True,default='I am a Vendor')
     address= models.CharField(max_length=100, default='123 Main road, India')
     contact= models.CharField(max_length=100, default='+12 (345) 6789')
     chat_resp_time= models.CharField(max_length=100, default='100')
@@ -76,12 +78,14 @@ class Product(models.Model):
     title = models.CharField(max_length=100,default='this is the prod title')
     vendor = models.ForeignKey(Vendor, on_delete=models.SET_NULL,null=True,related_name='products')
     image = models.ImageField(upload_to=user_directory_path,default='product.jpg')
-    description = models.TextField(default='This is the product',null=True,blank=True)
+    # description = models.TextField(default='This is the product',null=True,blank=True)
+    description = RichTextUploadingField(default='This is the product',null=True,blank=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, related_name='products')
     price = models.DecimalField(max_digits=999999,decimal_places=2,default='1.99')
     old_price = models.DecimalField(max_digits=999999,decimal_places=2,default='1.99')
-    specifications = models.TextField(null=True,blank=True)
+    # specifications = models.TextField(null=True,blank=True)
+    specifications = RichTextUploadingField(null=True,blank=True)
     type= models.CharField(max_length=100,default='Organic',null=True,blank=True)
     mfd=models.DateTimeField(auto_now_add=False,null=True,blank=True)
     stock_count = models.CharField(max_length=100,default='10',null=True,blank=True)
