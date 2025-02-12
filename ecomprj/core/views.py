@@ -1,7 +1,8 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.db.models import Avg
 from django.shortcuts import get_object_or_404, render
 from taggit.models import Tag
+from core.forms import ProductReviewForm
 from core.models import Product,Vendor,Category,ProductImage,ProductReview,CartOrder,CartOrderItems,Wishlist,Address
 def index(request):
     # products = Product.objects.all().order_by('-date')
@@ -53,13 +54,22 @@ def vendor_details_view(request,vid):
 def product_details_view(request,pid):
     product = Product.objects.get(pid=pid)
     product_images = product.p_image.all()
+    make_review=True
+
+    if request.user.is_authenticated:
+        review_count = ProductReview.objects.filter(product=product,user=request.user).count()
+        if review_count > 0:
+            make_review = False
     products  = Product.objects.filter(category = product.category).exclude(pid=pid)
     reviews = ProductReview.objects.filter(product=product).order_by('-date')
     #getting average rating
     average_rating = ProductReview.objects.filter(product=product).aggregate(rating=Avg('rating'))
+    ratings_form = ProductReviewForm()
     context = {
         'product':product,
+        'make_review': make_review,
         'product_images':product_images,
+        'ratings_form':ratings_form,
         'average_rating':average_rating,
         'related_products':products,
         'reviews':reviews
@@ -78,4 +88,32 @@ def tag_list(request,tag_slug=None):
         'tags':tag
     }
     return render(request,'core/tags.html',context)
+
+def ajax_add_review(request,pid):
+    product  = Product.objects.get(pid=pid)
+    user=request.user
+    review = ProductReview.objects.create(
+        user=user,
+        product= product,
+        review = request.POST['review'],
+        rating=request.POST['rating']
+    )
+    context={
+        'user':user.username,
+        'review': request.POST['review'],
+        'rating':request.POST['rating']
+    }
+
+    average_rating = ProductReview.objects.filter(product=product).aggregate(rating=Avg('rating'))
+
+    return JsonResponse(
+        {
+            'bool':True,
+            'context':context,
+            'average_rating':average_rating
+        }
+    )
+
+
+
 # Create your views here.
