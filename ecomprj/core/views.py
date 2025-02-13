@@ -143,5 +143,30 @@ def filter_product(request):
         'data':data
     })
 
+def add_cart_view(request):
+    cart_product={}
+    cart_product[str(request.GET['id'])]={
+        'title':request.GET['title'],
+        'quantity':request.GET['quantity'],
+        'price':request.GET['price'],
+    }
+
+    if 'cart_data_obj' in request.session:
+        if str(request.GET['id']) in request.session['cart_data_obj']:
+            cart_data = request.session['cart_data_obj']
+            cart_data[str(request.GET['id'])]['quantity']=int(cart_product[str(request.GET['id'])]['quantity'])
+            cart_data.update(cart_data)
+            request.session['cart_data_obj']=cart_data
+        else:
+            cart_data = request.session['cart_data_obj']
+            cart_data.update(cart_product)
+            request.session['cart_data_obj'] = cart_data
+    else:
+        request.session['cart_data_obj'] = cart_product
+
+    return JsonResponse({
+        'data':request.session['cart_data_obj'],
+        'totalcartitems':len(request.session['cart_data_obj'])
+    })
 
 # Create your views here.

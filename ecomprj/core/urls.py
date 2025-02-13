@@ -13,5 +13,6 @@ urlpatterns=[
     path('products/tag/<tag_slug>/',views.tag_list,name='tags'),
     path('ajax-add-review/<pid>',views.ajax_add_review,name='ajax-add-review'),
     path('search/',views.search_view,name='search'),
-    path('filter-products/',views.filter_product,name='filter-product')
+    path('filter-products/',views.filter_product,name='filter-product'),
+    path('add-to-cart/',views.add_cart_view,name='add-to-cart')
 ]
