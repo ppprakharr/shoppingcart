@@ -1,4 +1,5 @@
-console.log('hello')
+console.log("JS file is loaded!");
+
 $('#commentForm').submit(function(e)
 {
 e.preventDefault()
@@ -80,5 +81,29 @@ $(document).ready(function (){
             }
         })
     })
+    $('#max_price').on('blur',function(){
+        let min_price = $(this).attr('min')
+        let max_price = $(this).attr('max')
+        let current_price = $(this).val()
+
+
+
+        if(current_price < parseInt(min_price) || current_price>parseInt(max_price)){
+            // console.log('error')
+            min_price = Math.round(min_price*100)/100
+            max_price = Math.round(max_price*100)/100
+            alert('Price should be between $'+min_price+' and $'+max_price)
+            $(this).val(min_price)
+            $('#range').val(min_price)
+            $(this).focus()
+
+            return false
+        }
+
+    })
+    // $('.btn').on('click',function(e){
+    //     e.preventDefault()
+    //     console.log('button is clicked')
+    // })
 }
 )
