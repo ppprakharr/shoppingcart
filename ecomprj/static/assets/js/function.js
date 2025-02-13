@@ -56,12 +56,16 @@ $.ajax({
 
 
 $(document).ready(function (){
-    $('.filter-checkbox').on('click', function(){
+    $('.filter-checkbox, #filter-btn').on('click', function(){
         console.log('filter is clicked')
         filter_object={}
         $('.filter-checkbox').each(function(){
             let filter_val = $(this).val()
             let filter_key=$(this).data('filter')
+            let min_price = $('#max_price').attr('min')
+            let max_price = $('#max_price').val()
+            filter_object.min_price = min_price
+            filter_object.max_price = max_price
             filter_object[filter_key]=Array.from(document.querySelectorAll('input[data-filter='+filter_key+']:checked')).map(function(e){
                 return e.value
             })
