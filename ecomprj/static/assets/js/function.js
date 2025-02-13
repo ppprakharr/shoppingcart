@@ -52,3 +52,33 @@ $.ajax({
     
 })
 });
+
+
+$(document).ready(function (){
+    $('.filter-checkbox').on('click', function(){
+        console.log('filter is clicked')
+        filter_object={}
+        $('.filter-checkbox').each(function(){
+            let filter_val = $(this).val()
+            let filter_key=$(this).data('filter')
+            filter_object[filter_key]=Array.from(document.querySelectorAll('input[data-filter='+filter_key+']:checked')).map(function(e){
+                return e.value
+            })
+        })
+        console.log('json check',filter_object)
+        $.ajax({
+            data: filter_object,
+            url: '/filter-products',
+            dataType: 'json',
+            beforeSend: function(){
+                console.log('searching..')
+            },
+            success: function(response){
+                console.log('response_data->',response.data)
+                $('#filtered-product').html(response.data)
+
+            }
+        })
+    })
+}
+)

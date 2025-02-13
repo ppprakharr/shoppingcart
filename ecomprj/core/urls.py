@@ -12,5 +12,6 @@ urlpatterns=[
     path('vendors/<vid>', views.vendor_details_view,name='vendor-details-page'),
     path('products/tag/<tag_slug>/',views.tag_list,name='tags'),
     path('ajax-add-review/<pid>',views.ajax_add_review,name='ajax-add-review'),
-    path('search/',views.search_view,name='search')
+    path('search/',views.search_view,name='search'),
+    path('filter-products/',views.filter_product,name='filter-product')
 ]
