@@ -1,7 +1,8 @@
 from django.http import HttpResponse, JsonResponse
 from django.db.models import Avg
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from taggit.models import Tag
+from django.contrib import messages
 from django.template.loader import render_to_string
 from core.forms import ProductReviewForm
 from core.models import Product,Vendor,Category,ProductImage,ProductReview,CartOrder,CartOrderItems,Wishlist,Address
@@ -170,5 +171,16 @@ def add_cart_view(request):
         'data':request.session['cart_data_obj'],
         'totalcartitems':len(request.session['cart_data_obj'])
     })
+
+def cart_view(request):
+    cart_total_amount = 0
+    if 'cart_data_obj' in request.session:
+        for p_id, item in request.session['cart_data_obj'].items():
+            cart_total_amount+= int(item['quantity'])*float(item['price'])
+        return render(request,'core/cart.html',{'cart_data':request.session['cart_data_obj'],
+        'totalcartitems':len(request.session['cart_data_obj']),'cart_total_amount':cart_total_amount})
+    else:
+       messages.warning(request,'Your cart is empty')
+       return redirect('core:index')
 
 # Create your views here.

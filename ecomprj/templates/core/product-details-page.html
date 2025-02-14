@@ -58,7 +58,7 @@
                                             </div>
                                             <div class="clearfix product-price-cover">
                                                 <div class="product-price primary-color float-left">
-                                                   <span class='current-price text-brand'>$</span> <span id='current-price' class="current-product-price--{{product.id}} text-brand">{{product.price}}</span>
+                                                   <span class='current-price text-brand'>$</span> <span id='current-price' class="current-product-price-{{product.id}} current-price text-brand">{{product.price}}</span>
                                                     <span>
                                                         <span class="save-price font-md color3 ml-15">{{product.get_percentage|floatformat:0}}% Off</span>
                                                     <span class="old-price font-md ml-15">${{product.old_price}}</span>
@@ -91,8 +91,8 @@
                                                     <input name='' class='product-id-{{product.id}}' type='hidden' value={{product.id}} id=''>
                                                     <input name='' class='product-title-{{product.id}}' type='hidden' value={{product.title}} id=''>
                                                     <input name='' class='product-pid-{{product.id}}' type='hidden' value={{product.pid}} id=''>
-                                                    <input name=''  id='' class='product-image-{{product.id}}' value='product.image.url' type='hidden'>
-                                                    <button type="submit" id='add-to-cart-btn' data-index='{{product.id}}' class="button button-add-to-cart"><i class="fi-rs-shopping-cart"></i>Add to cart</button>
+                                                    <input name=''  id='' class='product-image-{{product.id}}' value={{product.image.url}} type='hidden'>
+                                                    <button id='add-to-cart-btn' data-index='{{product.id}}' class="button add-to-cart-btn"><i class="fi-rs-shopping-cart"></i>Add to cart</button>
                                                     <a aria-label="Add To Wishlist" class="action-btn hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
                                                     <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
                                                 </div>
