@@ -199,4 +199,21 @@ def delete_product_from_cart(request):
     context = render_to_string('core/async/cart-list.html',{'cart_data':request.session['cart_data_obj'],
         'totalcartitems':len(request.session['cart_data_obj']),'cart_total_amount':cart_total_amount})
     return JsonResponse({'data':context,'totalcartitems':len(request.session['cart_data_obj'])})
+
+def update_from_cart(request):
+    product_id=str(request.GET['id'])
+    product_quantity = request.GET['quantity']
+    if 'cart_data_obj' in request.session:
+        if product_id in request.session['cart_data_obj']:
+            cart_data  = request.session['cart_data_obj']
+            cart_data[product_id]['quantity']=product_quantity
+            request.session['cart_data_obj'] = cart_data
+    cart_total_amount = 0
+    if 'cart_data_obj' in request.session:
+        for p_id, item in request.session['cart_data_obj'].items():
+            cart_total_amount+= int(item['quantity'])*float(item['price'])
+        
+    context = render_to_string('core/async/cart-list.html',{'cart_data':request.session['cart_data_obj'],
+        'totalcartitems':len(request.session['cart_data_obj']),'cart_total_amount':cart_total_amount})
+    return JsonResponse({'data':context,'totalcartitems':len(request.session['cart_data_obj'])})
 # Create your views here.
