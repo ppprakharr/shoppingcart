@@ -1,7 +1,7 @@
 {% extends 'partials/base.html'%}
 {%load static%}
 {%block content%}
-    <main class="main">
+    <main class="main" id='cart-list'>
         <div class="page-header breadcrumb-wrap">
             <div class="container">
                 <div class="breadcrumb">
@@ -53,7 +53,7 @@
 
                                     </td>
                                     <td class="price" data-title="Price">
-                                        <h4 class="text-body">${{item.price}}</h4>
+                                        <h4 class="text-body">${{item.price|floatformat:2}}</h4>
                                     </td>
                                     <td class="text-center detail-info" data-title="Stock">
                                         <div class="detail-extralink mr-15 text-center">
@@ -64,7 +64,7 @@
                                         <h4 class="text-brand">${% widthratio item.price 1 item.quantity%}</h4>
                                     </td>
                                     <td class="action text-center" data-title="Refresh"><a href="#" class="text-body"><i class="fi-rs-refresh"></i></a></td>
-                                    <td class="action text-center" data-title="Remove"><a href="#" class="text-body"><i class="fi-rs-trash"></i></a></td>
+                                    <td class="action text-center" data-title="Remove"><button style='background:none; border:none' class="text-body delete-product" data-product='{{product_id}}'><i class="fi-rs-trash"></i></button></td>
                                 </tr>
                                 {%endfor%}
 
@@ -370,7 +370,7 @@
                                             <h6 class="text-muted">Subtotal</h6>
                                         </td>
                                         <td class="cart_total_amount">
-                                            <h4 class="text-brand text-end">${{cart_total_amount}}</h4>
+                                            <h4 class="text-brand text-end">${{cart_total_amount|floatformat:2}}</h4>
                                         </td>
                                     </tr>
                                     <tr>
@@ -390,7 +390,7 @@
                                             <h6 class="text-muted">Total</h6>
                                         </td>
                                         <td class="cart_total_amount">
-                                            <h4 class="text-brand text-end">${{cart_total_amount}}</h4>
+                                            <h4 class="text-brand text-end">${{cart_total_amount|floatformat:2}}</h4>
                                         </td>
                                     </tr>
                                 </tbody>

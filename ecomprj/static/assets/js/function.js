@@ -185,3 +185,27 @@ $('.add-to-cart-btn').on('click', function(){
         }
     })
 })
+
+
+// delete product from cart
+$(document).on('click','.delete-product',function(){
+    let this_val = $(this)
+    let product_id = $(this).attr('data-product')
+    console.log('produtc id',product_id)
+
+    $.ajax({
+        url: '/delete-from-cart',
+        data: {
+            'id':product_id
+        },
+        dataType: 'json',
+        beforeSend: function(){
+            this_val.hide()
+        },
+        success: function(response){
+            this_val.show()
+            $('.cart-items-count').text(response.totalcartitems)
+            $('#cart-list').html(response.data)
+        }
+    })
+})
