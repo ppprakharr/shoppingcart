@@ -149,6 +149,8 @@ def add_cart_view(request):
         'title':request.GET['title'],
         'quantity':request.GET['quantity'],
         'price':request.GET['price'],
+        'pid':request.GET['pid'],
+        'image': request.GET['image']
     }
 
     if 'cart_data_obj' in request.session:
