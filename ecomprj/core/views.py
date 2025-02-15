@@ -216,4 +216,17 @@ def update_from_cart(request):
     context = render_to_string('core/async/cart-list.html',{'cart_data':request.session['cart_data_obj'],
         'totalcartitems':len(request.session['cart_data_obj']),'cart_total_amount':cart_total_amount})
     return JsonResponse({'data':context,'totalcartitems':len(request.session['cart_data_obj'])})
+
+def checkout_view(request):
+    cart_total_amount = 0
+    if 'cart_data_obj' in request.session:
+        for p_id, item in request.session['cart_data_obj'].items():
+            cart_total_amount+= int(item['quantity'])*float(item['price'])
+        return render(request,'core/checkout.html',{'cart_data':request.session['cart_data_obj'],
+        'totalcartitems':len(request.session['cart_data_obj']),'cart_total_amount':cart_total_amount})
+    else:
+        messages.warning(request,'Cannot checkout since cart is empty')
+        return redirect('core:index')
+
+
 # Create your views here.
