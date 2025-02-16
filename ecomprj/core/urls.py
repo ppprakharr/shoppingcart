@@ -21,5 +21,7 @@ urlpatterns=[
     path('checkout/',views.checkout_view,name='checkout'),
     path('paypal/',include('paypal.standard.ipn.urls')),
     path('payment-completed/',views.payment_completed_view,name='payment-completed'),
-    path('payment-failed/',views.payment_failed_view,name='payment-failed')
+    path('payment-failed/',views.payment_failed_view,name='payment-failed'),
+    path('dashboard/',views.customer_dashboard,name='dashboard'),
+    path('order-details/<id>',views.order_details_view,name='order-details')
 ]

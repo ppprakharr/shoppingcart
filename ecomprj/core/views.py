@@ -279,5 +279,22 @@ def payment_completed_view(request):
 def payment_failed_view(request):
     return render(request,'core/payment-failed.html')
 
+@login_required
+def customer_dashboard(request):
+    orders = CartOrder.objects.filter(user=request.user).order_by('-id')
+    context={
+        'orders': orders
+    }
+    return render(request,'core/customer-dashboard.html',context)
+
+@login_required
+def order_details_view(request, id):
+    order=CartOrder.objects.get(user=request.user, id=id)
+    product =CartOrderItems.objects.filter(order=order)
+    context={
+        'order_items':product
+    }
+    return render(request,'core/order-details.html',context)
+
 
 # Create your views here.
