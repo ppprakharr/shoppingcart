@@ -6,7 +6,6 @@ def default(request):
     products = Product.objects.all()
     vendors = Vendor.objects.all()
     min_max_price = Product.objects.aggregate(min_price=Min('price'),max_price=Max('price'))
-    print('price range',min_max_price)
     try:
           address = Address.objects.get(user=request.user)
     except:

@@ -2,6 +2,11 @@ from django.http import HttpResponse, JsonResponse
 from django.db.models import Avg
 from django.shortcuts import get_object_or_404, redirect, render
 from taggit.models import Tag
+from django.urls import reverse
+from django.contrib.auth.decorators import login_required
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+from paypal.standard.forms import PayPalPaymentsForm
 from django.contrib import messages
 from django.template.loader import render_to_string
 from core.forms import ProductReviewForm
@@ -157,7 +162,7 @@ def add_cart_view(request):
     if 'cart_data_obj' in request.session:
         if str(request.GET['id']) in request.session['cart_data_obj']:
             cart_data = request.session['cart_data_obj']
-            cart_data[str(request.GET['id'])]['quantity']=int(cart_product[str(request.GET['id'])]['quantity'])
+            cart_data[str(request.GET['id'])]['quantity']+=int(cart_product[str(request.GET['id'])]['quantity'])
             cart_data.update(cart_data)
             request.session['cart_data_obj']=cart_data
         else:
@@ -217,16 +222,62 @@ def update_from_cart(request):
         'totalcartitems':len(request.session['cart_data_obj']),'cart_total_amount':cart_total_amount})
     return JsonResponse({'data':context,'totalcartitems':len(request.session['cart_data_obj'])})
 
+@login_required
 def checkout_view(request):
+    total_amount=0
     cart_total_amount = 0
     if 'cart_data_obj' in request.session:
         for p_id, item in request.session['cart_data_obj'].items():
+            total_amount+= int(item['quantity'])*float(item['price'])
+        order = CartOrder.objects.create(
+            user=request.user,
+            price=total_amount
+        )
+
+        for p_id, item in request.session['cart_data_obj'].items():
             cart_total_amount+= int(item['quantity'])*float(item['price'])
+
+            cart_order_items = CartOrderItems.objects.create(
+                order=order,
+                invoice_no= 'INVOICE_NO_'+str(order.id),
+                item = item['title'],
+                image = item['image'],
+                qty = item['quantity'],
+                price=item['price'],
+                total=int(item['quantity'])*float(item['price'])
+            )
+    host = request.get_host()
+    paypal_dict={
+        'business': settings.PAYPAL_RECEIVER_EMAIL,
+        'amount': total_amount,
+        'item_name': 'Order-Item-No-'+str(order.id),
+        'invoice': 'Invoice-no-'+str(order.id),
+        'currency_code': 'USD',
+        'notify-url': 'https://{}{}'.format(host,reverse('core:paypal-ipn')),
+        'return_url':'https://{}{}'.format(host,reverse('core:payment-completed')),
+        'cancel_url': 'https://{}{}'.format(host,reverse('core:payment-failed')),
+    }
+    paypal_payment_button = PayPalPaymentsForm(initial=paypal_dict)
+    
+    if 'cart_data_obj' in request.session:
         return render(request,'core/checkout.html',{'cart_data':request.session['cart_data_obj'],
-        'totalcartitems':len(request.session['cart_data_obj']),'cart_total_amount':cart_total_amount})
+        'totalcartitems':len(request.session['cart_data_obj']),'cart_total_amount':cart_total_amount,'paypal_payment_button':paypal_payment_button})
     else:
         messages.warning(request,'Cannot checkout since cart is empty')
         return redirect('core:index')
+
+@login_required  
+def payment_completed_view(request):
+    cart_total_amount = 0
+    if 'cart_data_obj' in request.session:
+        for p_id, item in request.session['cart_data_obj'].items():
+            cart_total_amount+=int(item['quantity'])*float(item['price'])
+
+        return render(request, 'core/payment-completed.html',{'cart_data':request.session['cart_data_obj'],'totalcartitems':len(request.session['cart_data_obj']),'cart_total_amount':cart_total_amount})
+
+@login_required
+def payment_failed_view(request):
+    return render(request,'core/payment-failed.html')
 
 
 # Create your views here.

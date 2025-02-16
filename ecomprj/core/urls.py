@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path,include
 from core import views
 app_name='core'
 
@@ -18,5 +18,8 @@ urlpatterns=[
     path('cart/',views.cart_view,name='cart'),
     path('delete-from-cart/',views.delete_product_from_cart,name='delete-from-cart'),
     path('update-cart/',views.update_from_cart,name='update-from-cart'),
-    path('checkout/',views.checkout_view,name='checkout')
+    path('checkout/',views.checkout_view,name='checkout'),
+    path('paypal/',include('paypal.standard.ipn.urls')),
+    path('payment-completed/',views.payment_completed_view,name='payment-completed'),
+    path('payment-failed/',views.payment_failed_view,name='payment-failed')
 ]

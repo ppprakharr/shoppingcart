@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'jazzmin',
     'userauths',
     'ckeditor',
+    'paypal.standard.ipn',
 ]
 
 MIDDLEWARE = [
@@ -117,6 +118,7 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+LOGIN_URL = 'userauths:sign-in'
 
 
 # Static files (CSS, JavaScript, Images)
@@ -143,3 +145,6 @@ JAZZMIN_SETTINGS={
 
 AUTH_USER_MODEL = 'userauths.User'
 CKEDITOR_UPLOAD_PATH = 'uploads/'
+
+PAYPAL_RECEIVER_EMAIL = 'business.prakhar.srivastava999@gmail.com'
+PAYPAL_TEST=True
