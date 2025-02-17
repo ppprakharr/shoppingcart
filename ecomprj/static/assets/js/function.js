@@ -285,3 +285,28 @@ $(document).on('click','.add-to-wishlist',function(){
     })
 
 })
+
+// remove from wishlist
+$(document).on('click','.remove-btn',function(){
+    let product_id=$(this).attr('data-product-id')
+    let this_val=$(this)
+    console.log('remove btn is clickable with product id->',product_id)
+
+    $.ajax({
+        url: '/remove-from-wishlist',
+        data:{
+            'id':product_id
+        },
+        dataType: 'json',
+        beforeSend:function(){
+            console.log('sending request to remove from WL')
+        },
+        success: function(response){
+            if(response.bool == true){
+                console.log('deleted from WL')
+                console.log('the json will be strucured --->',response.object)
+                $('.wishlist-test').html(response.data)
+            }
+        }
+    })
+})

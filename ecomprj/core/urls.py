@@ -26,5 +26,6 @@ urlpatterns=[
     path('order-details/<id>',views.order_details_view,name='order-details'),
     path('make-default-address/',views.make_address_default,name='make-default-address'),
     path('add-to-wishlist/',views.add_to_wishlist,name='add-to-wishlist'),
-    path('wishlist/',views.wishlist_view,name='wishlist')
+    path('wishlist/',views.wishlist_view,name='wishlist'),
+    path('remove-from-wishlist/',views.remove_from_wishlist_view,name='remove-from-wishlist')
 ]

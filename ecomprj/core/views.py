@@ -9,6 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from paypal.standard.forms import PayPalPaymentsForm
 from django.contrib import messages
 from django.template.loader import render_to_string
+from django.core import serializers
 from core.forms import ProductReviewForm
 from core.models import Product,Vendor,Category,ProductImage,ProductReview,CartOrder,CartOrderItems,Wishlist,Address
 def index(request):
@@ -356,6 +357,23 @@ def add_to_wishlist(request):
         context
     )
 
+
+@login_required
+def remove_from_wishlist_view(request):
+    product_id=request.GET['id']
+    product = Product.objects.get(id=product_id)
+    wishlist=Wishlist.objects.filter(user=request.user)
+    Wishlist.objects.filter(user=request.user,product=product).delete()
+    context={
+        'bool':True,
+        'wishlist':wishlist
+        }
+    json_wishlist = serializers.serialize('json',wishlist)
+
+    # wishlist = Wishlist.objects.filter(user=request.user,product=product)
+    data=render_to_string('core/async/wishlist.html',context)
+    return JsonResponse({'data':data,'object':json_wishlist,'bool':True})
+    
 
 
 # Create your views here.
