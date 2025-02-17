@@ -323,6 +323,7 @@ def make_address_default(request):
         'boolean':True
     })
 
+@login_required
 def wishlist_view(request):
     try:
         wishlist = Wishlist.objects.all()

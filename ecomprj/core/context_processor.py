@@ -13,9 +13,9 @@ def default(request):
          address=None
      
     try:
-         wishlist = Wishlist.objects.filter(user=request.user).count()
+         wishlist = Wishlist.objects.filter(user=request.user)
     except:
-          wishlist=0
+          wishlist=None
           messages.warning(request,'You need to login before adding products to wishlist')
 
     return {
