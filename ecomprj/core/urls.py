@@ -23,5 +23,6 @@ urlpatterns=[
     path('payment-completed/',views.payment_completed_view,name='payment-completed'),
     path('payment-failed/',views.payment_failed_view,name='payment-failed'),
     path('dashboard/',views.customer_dashboard,name='dashboard'),
-    path('order-details/<id>',views.order_details_view,name='order-details')
+    path('order-details/<id>',views.order_details_view,name='order-details'),
+    path('make-default-address/',views.make_address_default,name='make-default-address')
 ]

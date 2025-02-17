@@ -258,10 +258,16 @@ def checkout_view(request):
         'cancel_url': 'https://{}{}'.format(host,reverse('core:payment-failed')),
     }
     paypal_payment_button = PayPalPaymentsForm(initial=paypal_dict)
+
+    try:
+        active_address = Address.objects.get(user=request.user,status=True)
+    except:
+        active_address=None
+
     
     if 'cart_data_obj' in request.session:
         return render(request,'core/checkout.html',{'cart_data':request.session['cart_data_obj'],
-        'totalcartitems':len(request.session['cart_data_obj']),'cart_total_amount':cart_total_amount,'paypal_payment_button':paypal_payment_button})
+        'totalcartitems':len(request.session['cart_data_obj']),'cart_total_amount':cart_total_amount,'paypal_payment_button':paypal_payment_button,'active_address':active_address})
     else:
         messages.warning(request,'Cannot checkout since cart is empty')
         return redirect('core:index')
@@ -282,8 +288,21 @@ def payment_failed_view(request):
 @login_required
 def customer_dashboard(request):
     orders = CartOrder.objects.filter(user=request.user).order_by('-id')
+    address = Address.objects.filter(user=request.user)
+
+    if request.method == 'POST':
+        address = request.POST['address']
+        mobile  = request.POST['phone']
+        new_address = Address.objects.create(
+            user=request.user,
+            address=address,
+            mobile=mobile
+        )
+        messages.success(request,'Address added successfully')
+        return redirect('core:dashboard')
     context={
-        'orders': orders
+        'orders': orders,
+        'address': address
     }
     return render(request,'core/customer-dashboard.html',context)
 
@@ -295,6 +314,15 @@ def order_details_view(request, id):
         'order_items':product
     }
     return render(request,'core/order-details.html',context)
+
+def make_address_default(request):
+    id=request.GET['id']
+    Address.objects.update(status=False)
+    Address.objects.filter(id=id).update(status=True)
+    return JsonResponse({
+        'boolean':True
+    })
+
 
 
 # Create your views here.

@@ -235,3 +235,31 @@ $(document).on('click','.update-product',function(){
         }
     })
 })
+
+
+// address default field
+$(document).on('click','.make-default-address',function(){
+    let id = $(this).attr('data-address-id')
+    let this_val=$(this)
+    console.log('button id->',id)
+    console.log('button details->',this_val)
+
+    $.ajax({
+        url: '/make-default-address',
+        data:{
+            'id':id
+        },
+        dataType: 'json',
+        success: function(response){
+            console.log('changing address')
+            if (response.boolean == true){
+                $('.action_btn').show()
+                $('.check-marked').hide()
+                $('.button-'+id).hide()
+                $('.check'+id).show()
+
+            }
+        }
+
+    })
+})
