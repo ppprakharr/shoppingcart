@@ -11,6 +11,7 @@ from django.contrib import messages
 from django.template.loader import render_to_string
 from django.core import serializers
 from core.forms import ProductReviewForm
+from userauths.models import Profile
 from core.models import Product,Vendor,Category,ProductImage,ProductReview,CartOrder,CartOrderItems,Wishlist,Address
 def index(request):
     # products = Product.objects.all().order_by('-date')
@@ -290,6 +291,7 @@ def payment_failed_view(request):
 def customer_dashboard(request):
     orders = CartOrder.objects.filter(user=request.user).order_by('-id')
     address = Address.objects.filter(user=request.user)
+    user_profile = Profile.objects.get(user=request.user)
 
     if request.method == 'POST':
         address = request.POST['address']
@@ -303,8 +305,11 @@ def customer_dashboard(request):
         return redirect('core:dashboard')
     context={
         'orders': orders,
-        'address': address
+        'address': address,
+        'user_profile':user_profile
     }
+
+        
     return render(request,'core/customer-dashboard.html',context)
 
 @login_required
