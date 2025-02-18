@@ -33,4 +33,21 @@ def save_user_profile(sender,instance,**kwargs):
 post_save.connect(create_user_profile,sender=User)
 post_save.connect(save_user_profile,sender=User)
 
+class ContactUs(models.Model):
+    full_name = models.CharField(max_length=200)
+    # user = models.ForeignKey(User,on_delete=models.SET_NULL, null=True)
+    email = models.CharField(max_length=200,default='lorem@gmail.com')
+    phone=models.CharField(max_length=30,null=True,blank=True)
+    subject = models.CharField(max_length=200)
+    message = models.TextField()
+
+    class Meta:
+        verbose_name_plural='Contact Us'
+    
+    def __str__(self):
+        try:
+            return self.full_name
+        except:
+            return self.user.username
+
 # Create your models here.

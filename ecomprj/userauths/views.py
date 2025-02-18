@@ -1,8 +1,10 @@
+from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from userauths.forms import UserRegistrationForm,ProfileForm
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.conf import settings
+from userauths.models import ContactUs
 from django.contrib.auth import logout
 from userauths.models import User,Profile
 # User = settings.AUTH_USER_MODEL
@@ -77,6 +79,29 @@ def edit_profile_view(request):
             'profile':profile
         }
         return render(request,'userauths/edit-profile.html',context)
+    
+def contact_views(request):
+    return render(request,'userauths/contact.html')
+
+def ajax_contact_page_view(request):
+    full_name = request.GET['full_name']
+    email=request.GET['email']
+    phone=request.GET['phone']
+    message = request.GET['message']
+    subject = request.GET['subject']
+    contact=ContactUs.objects.create(
+        full_name=full_name,
+        email=email,
+        phone=phone,
+        subject=subject,
+        message=message
+    )
+    data={
+        'bool':True,
+        'message': 'Message recorded successfully'
+    }
+    return JsonResponse({'data':data})
+
 
     
 

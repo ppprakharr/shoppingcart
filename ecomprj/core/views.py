@@ -378,6 +378,8 @@ def remove_from_wishlist_view(request):
     # wishlist = Wishlist.objects.filter(user=request.user,product=product)
     data=render_to_string('core/async/wishlist.html',context)
     return JsonResponse({'data':data,'object':json_wishlist,'bool':True})
+
+
     
 
 

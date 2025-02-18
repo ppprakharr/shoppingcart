@@ -310,3 +310,45 @@ $(document).on('click','.remove-btn',function(){
         }
     })
 })
+
+//contact us
+
+$(document).on('submit','#contact-form-ajax',function(e){
+    e.preventDefault()
+    console.log('form submitted')
+    let full_name = $('#full_name').val()
+    let email = $('#email').val()
+    // let method=$(this).attr('method')
+    let phone = $('#phone').val()
+    let subject = $('#subject').val()
+    let message = $('#message').val()
+    console.log('full_name->',full_name)
+    console.log('email->',email)
+    console.log('phone->',phone)
+    // console.log('#####',method)
+    console.log('subject->',subject)
+    console.log('message->',message)
+
+
+    $.ajax({
+        url: '/ajax-contact-form/',
+        data:
+        {
+            'full_name':full_name,
+            'email':email,
+            'phone':phone,
+            'subject':subject,
+            'message':message
+        },
+        datatype:'json',
+        beforeSend: function(){
+            
+            console.log('sending')
+        },
+        success: function(response){
+            console.log('recieved success')
+            console.log('resp',response.data.message)
+        }
+
+    })
+})
