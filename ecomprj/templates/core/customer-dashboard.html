@@ -52,7 +52,11 @@
                                             </div>
                                             <div class='card-body' style='display:flex; align-items:center; gap:10px'>
                                                 <div>
+                                                {%if user_profile.image%}
                                                 <span><img src='{{user_profile.image.url}}' style='width: 150px; height:150px; object-fit; border-radius:50%'>
+                                                {%else%}
+                                                <span><img src='https://img.freepik.com/premium-vector/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-vector-illustration_561158-3383.jpg?semt=ais_hybrid' style='width: 150px; height:150px; object-fit; border-radius:50%'>
+                                                {%endif%}
                                                 </div>
                                                 <div>
                                                     <span class='fw-bold mb-2'><strong>Name:</strong> </span><input type='text' class='' value='{{user_profile.full_name|title}}' name='Name'></input>
@@ -67,7 +71,7 @@
                                                         {%endif%}
                                                     </div>
                                                     <div class='p-4 border rounded'>
-                                                    <button class='btn'>Edit Profile</button>
+                                                    <a href='{% url 'userauths:edit-profile'%}' class='btn'>Edit Profile</a>
                                                     </div>
                                                 </div>
                                             </div>
