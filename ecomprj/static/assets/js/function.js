@@ -241,8 +241,8 @@ $(document).on('click','.update-product',function(){
 $(document).on('click','.make-default-address',function(){
     let id = $(this).attr('data-address-id')
     let this_val=$(this)
-    console.log('button id->',id)
-    console.log('button details->',this_val)
+    // console.log('button id->',id)
+    // console.log('button details->',this_val)
 
     $.ajax({
         url: '/make-default-address',
@@ -268,7 +268,7 @@ $(document).on('click','.make-default-address',function(){
 $(document).on('click','.add-to-wishlist',function(){
     let product_id=$(this).attr('data-product-item')
     let this_val = $(this)
-    console.log('btn Id->',product_id)
+    // console.log('btn Id->',product_id)
     $.ajax({
         url:'/add-to-wishlist',
         data:{
@@ -290,7 +290,7 @@ $(document).on('click','.add-to-wishlist',function(){
 $(document).on('click','.remove-btn',function(){
     let product_id=$(this).attr('data-product-id')
     let this_val=$(this)
-    console.log('remove btn is clickable with product id->',product_id)
+    // console.log('remove btn is clickable with product id->',product_id)
 
     $.ajax({
         url: '/remove-from-wishlist',
@@ -299,12 +299,12 @@ $(document).on('click','.remove-btn',function(){
         },
         dataType: 'json',
         beforeSend:function(){
-            console.log('sending request to remove from WL')
+            // console.log('sending request to remove from WL')
         },
         success: function(response){
             if(response.bool == true){
-                console.log('deleted from WL')
-                console.log('the json will be strucured --->',response.object)
+                // console.log('deleted from WL')
+                // console.log('the json will be strucured --->',response.object)
                 $('.wishlist-test').html(response.data)
             }
         }
@@ -315,19 +315,19 @@ $(document).on('click','.remove-btn',function(){
 
 $(document).on('submit','#contact-form-ajax',function(e){
     e.preventDefault()
-    console.log('form submitted')
+    // console.log('form submitted')
     let full_name = $('#full_name').val()
     let email = $('#email').val()
     // let method=$(this).attr('method')
     let phone = $('#phone').val()
     let subject = $('#subject').val()
     let message = $('#message').val()
-    console.log('full_name->',full_name)
-    console.log('email->',email)
-    console.log('phone->',phone)
-    // console.log('#####',method)
-    console.log('subject->',subject)
-    console.log('message->',message)
+    // console.log('full_name->',full_name)
+    // console.log('email->',email)
+    // console.log('phone->',phone)
+    // // console.log('#####',method)
+    // console.log('subject->',subject)
+    // console.log('message->',message)
 
 
     $.ajax({
@@ -346,8 +346,8 @@ $(document).on('submit','#contact-form-ajax',function(e){
             console.log('sending')
         },
         success: function(response){
-            console.log('recieved success')
-            console.log('resp',response.data.message)
+            // console.log('recieved success')
+            // console.log('resp',response.data.message)
         }
 
     })
