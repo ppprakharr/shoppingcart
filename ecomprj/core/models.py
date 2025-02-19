@@ -128,7 +128,24 @@ class ProductImage(models.Model):
 
 class CartOrder(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
-    order_date = models.DateTimeField(auto_now_add=False)
+    full_name = models.CharField(max_length=200,null=True,blank=True)
+    email = models.EmailField(null=True,blank=True)
+    mobile = models.CharField(max_length=50,null=True,blank=True)
+    address = models.CharField(max_length=200,null=True,blank=True)
+    city = models.CharField(max_length=200,null=True,blank=True)
+    state = models.CharField(max_length=200,null=True,blank=True)
+    country = models.CharField(max_length=200,null=True,blank=True)
+
+    price = models.DecimalField(max_digits=12,decimal_places=2,default='0.00')
+    saved = models.DecimalField(max_digits=12,decimal_places=2,default='0.00')
+
+    shipping_address = models.CharField(max_length=200,null=True,blank=True)
+    tracking_id = models.CharField(max_length=200,null=True,blank=True)
+    tracking_website_id= models.CharField(max_length=200,null=True,blank=True)
+
+    stripe_payment_intent = models.CharField(max_length=1000,null=True,blank=True)
+    oid = ShortUUIDField(max_length=10,length=4,unique=True,alphabet='1234567890')
+    order_date = models.DateTimeField(auto_now_add=True)
     paid_status = models.BooleanField(default=False)
     price = models.DecimalField(max_digits=999999,decimal_places=2,default='1.99')
     product_status = models.CharField(choices=STATUS_CHOICE, max_length=30, default='processing')

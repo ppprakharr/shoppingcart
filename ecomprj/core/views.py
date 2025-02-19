@@ -226,18 +226,47 @@ def update_from_cart(request):
         'totalcartitems':len(request.session['cart_data_obj']),'cart_total_amount':cart_total_amount})
     return JsonResponse({'data':context,'totalcartitems':len(request.session['cart_data_obj'])})
 
-@login_required
-def checkout_view(request):
-    total_amount=0
+def save_checkout_info_view(request):
     cart_total_amount = 0
+    total_amount=0
+    if request.method=='POST':
+        full_name = request.POST['full_name']
+        email=request.POST['email']
+        mobile = request.POST['mobile']
+        address = request.POST['address']
+        city = request.POST['city']
+        state = request.POST['state']
+        country = request.POST['country']
+        request.session['full_name']=full_name
+        request.session['email']=email
+        request.session['mobile']=mobile
+        request.session['address']=address
+        request.session['city']=city
+        request.session['state']=state
+        request.session['country']=country
+
     if 'cart_data_obj' in request.session:
         for p_id, item in request.session['cart_data_obj'].items():
             total_amount+= int(item['quantity'])*float(item['price'])
         order = CartOrder.objects.create(
             user=request.user,
+            full_name=request.session['full_name'],
+            email=request.session['email'],
+            mobile=request.session['mobile'],
+            address=request.session['address'],
+            city=request.session['city'],
+            state=request.session['state'],
+            country=request.session['country'],
             price=total_amount
-        )
+        )    
 
+        del request.session['full_name']
+        del request.session['email']
+        del request.session['mobile']
+        del request.session['address']  
+        del request.session['city']
+        del request.session['state']
+        del request.session['country']
         for p_id, item in request.session['cart_data_obj'].items():
             cart_total_amount+= int(item['quantity'])*float(item['price'])
 
@@ -250,31 +279,20 @@ def checkout_view(request):
                 price=item['price'],
                 total=int(item['quantity'])*float(item['price'])
             )
-    host = request.get_host()
-    paypal_dict={
-        'business': settings.PAYPAL_RECEIVER_EMAIL,
-        'amount': total_amount,
-        'item_name': 'Order-Item-No-'+str(order.id),
-        'invoice': 'Invoice-no-'+str(order.id),
-        'currency_code': 'USD',
-        'notify-url': 'https://{}{}'.format(host,reverse('core:paypal-ipn')),
-        'return_url':'https://{}{}'.format(host,reverse('core:payment-completed')),
-        'cancel_url': 'https://{}{}'.format(host,reverse('core:payment-failed')),
+        return redirect('core:checkout',order.oid)
+    return redirect('core:checkout',order.oid)
+
+def checkout_view(request,oid):
+    order = CartOrder.objects.get(oid=oid)
+    order_items = CartOrderItems.objects.filter(order=order)
+    context={
+        'order_items':order_items,
+        'order':order
     }
-    paypal_payment_button = PayPalPaymentsForm(initial=paypal_dict)
-
-    try:
-        active_address = Address.objects.get(user=request.user,status=True)
-    except:
-        active_address=None
-
+    return render(request,'core/checkout.html',context)
     
-    if 'cart_data_obj' in request.session:
-        return render(request,'core/checkout.html',{'cart_data':request.session['cart_data_obj'],
-        'totalcartitems':len(request.session['cart_data_obj']),'cart_total_amount':cart_total_amount,'paypal_payment_button':paypal_payment_button,'active_address':active_address})
-    else:
-        messages.warning(request,'Cannot checkout since cart is empty')
-        return redirect('core:index')
+
+
 
 @login_required  
 def payment_completed_view(request):

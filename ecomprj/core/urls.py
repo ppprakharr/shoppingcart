@@ -29,5 +29,7 @@ urlpatterns=[
     path('add-to-wishlist/',views.add_to_wishlist,name='add-to-wishlist'),
     path('wishlist/',views.wishlist_view,name='wishlist'),
     path('remove-from-wishlist/',views.remove_from_wishlist_view,name='remove-from-wishlist'),
-    path('ajax-contact-form/',ajax_contact_page_view,name='ajax-contact-form')
+    path('ajax-contact-form/',ajax_contact_page_view,name='ajax-contact-form'),
+    path('save-checkout-info/',views.save_checkout_info_view,name='save-checkout-info'),
+    path('checkout/<oid>',views.checkout_view,name='checkout')
 ]
