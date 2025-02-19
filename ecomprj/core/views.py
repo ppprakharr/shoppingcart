@@ -1,6 +1,7 @@
 from django.http import HttpResponse, JsonResponse
-from django.db.models import Avg
+from django.db.models import Avg, Count
 from django.shortcuts import get_object_or_404, redirect, render
+from django.db.models.functions import ExtractMonth
 from taggit.models import Tag
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
@@ -11,6 +12,7 @@ from django.contrib import messages
 from django.template.loader import render_to_string
 from django.core import serializers
 from core.forms import ProductReviewForm
+import calendar
 from userauths.models import Profile
 from core.models import Product,Vendor,Category,ProductImage,ProductReview,CartOrder,CartOrderItems,Wishlist,Address
 def index(request):
@@ -289,7 +291,16 @@ def payment_failed_view(request):
 
 @login_required
 def customer_dashboard(request):
-    orders = CartOrder.objects.filter(user=request.user).order_by('-id')
+    orders_list = CartOrder.objects.filter(user=request.user).order_by('-id')
+    orders  = CartOrder.objects.filter(user=request.user).annotate(month=ExtractMonth('order_date')).values('month').annotate(total=Count('id')).values('month','total')
+    month=[]
+    item_count=[]
+
+    for o in orders:
+        month.append(calendar.month_name[o['month']])
+        item_count.append(o['total'])
+        
+
     address = Address.objects.filter(user=request.user)
     user_profile = Profile.objects.get(user=request.user)
 
@@ -304,9 +315,11 @@ def customer_dashboard(request):
         messages.success(request,'Address added successfully')
         return redirect('core:dashboard')
     context={
-        'orders': orders,
+        'orders_list': orders_list,
         'address': address,
-        'user_profile':user_profile
+        'user_profile':user_profile,
+        'month':month,
+        'item_count':item_count
     }
 
         

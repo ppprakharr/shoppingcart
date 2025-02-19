@@ -128,7 +128,7 @@ class ProductImage(models.Model):
 
 class CartOrder(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
-    order_date = models.DateTimeField(auto_now_add=True)
+    order_date = models.DateTimeField(auto_now_add=False)
     paid_status = models.BooleanField(default=False)
     price = models.DecimalField(max_digits=999999,decimal_places=2,default='1.99')
     product_status = models.CharField(choices=STATUS_CHOICE, max_length=30, default='processing')
@@ -146,7 +146,7 @@ class CartOrderItems(models.Model):
     total = models.DecimalField(max_digits=999999,decimal_places=2,default='1.99')
 
     class Meta:
-        verbose_name_plural = 'Cart order Items'
+        verbose_name_plural = 'ßCart order Items'
     def order_image(self):
         return mark_safe(f'<img src="{self.image.url}" width="50" height="50" />')
     
