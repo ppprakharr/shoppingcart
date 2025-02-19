@@ -125,6 +125,16 @@ class ProductImage(models.Model):
 #######################cart,oder,ordertiems, address############################
 #######################cart,oder,ordertiems, address############################
 #######################cart,oder,ordertiems, address############################
+# 
+class Coupons(models.Model):
+    code=models.CharField(max_length=10,unique=True)
+    active=models.BooleanField(default=True)
+    discount = models.IntegerField(default=1)
+
+    class Meta:
+        verbose_name_plural = 'Coupons'
+    def __str__(self):
+        return self.code
 
 class CartOrder(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
@@ -138,6 +148,7 @@ class CartOrder(models.Model):
 
     price = models.DecimalField(max_digits=12,decimal_places=2,default='0.00')
     saved = models.DecimalField(max_digits=12,decimal_places=2,default='0.00')
+    coupons = models.ManyToManyField(Coupons,blank=True)
 
     shipping_address = models.CharField(max_length=200,null=True,blank=True)
     tracking_id = models.CharField(max_length=200,null=True,blank=True)
@@ -199,6 +210,7 @@ class Address(models.Model):
 
     class Meta:
         verbose_name_plural = 'Address'
+
 
     
 

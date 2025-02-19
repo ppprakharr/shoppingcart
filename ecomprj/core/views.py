@@ -14,7 +14,7 @@ from django.core import serializers
 from core.forms import ProductReviewForm
 import calendar
 from userauths.models import Profile
-from core.models import Product,Vendor,Category,ProductImage,ProductReview,CartOrder,CartOrderItems,Wishlist,Address
+from core.models import Product,Vendor,Category,Coupons,ProductImage,ProductReview,CartOrder,CartOrderItems,Wishlist,Address
 def index(request):
     # products = Product.objects.all().order_by('-date')
     products = Product.objects.filter(featured=True, product_status='published')
@@ -285,6 +285,27 @@ def save_checkout_info_view(request):
 def checkout_view(request,oid):
     order = CartOrder.objects.get(oid=oid)
     order_items = CartOrderItems.objects.filter(order=order)
+
+    if request.method=='POST':
+        code=request.POST['code']
+        coupon = Coupons.objects.filter(code=code).first()
+
+        if coupon:
+            if coupon in order.coupons.all():
+                messages.warning(request,'Coupon already applied')
+                return redirect('core:checkout',order.oid)
+            else:
+                messages.success(request,'Coupon applied successfully')
+                discount=order.price * coupon.discount/100
+                order.price-=discount
+                order.saved+=discount
+                order.save()
+                order.coupons.add(coupon)
+                return redirect('core:checkout',order.oid)
+        else:
+            messages.warning(request,'Invalid coupon code')
+            return redirect('core:checkout',order.oid)
+
     context={
         'order_items':order_items,
         'order':order

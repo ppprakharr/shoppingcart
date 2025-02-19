@@ -71,8 +71,9 @@
 
                 <div class="row mb-50">
                     <div class="col-lg-12">
-                        <form method="post" class="apply-coupon">
-                            <input type="text" placeholder="Enter Coupon Code..." />
+                        <form method="POST" class="apply-coupon">
+                            {%csrf_token%}
+                            <input type="text" name='code' placeholder="Enter Coupon Code..." />
                             <button class="btn btn-md" name="login">Apply Coupon</button>
                         </form>
                     </div>
