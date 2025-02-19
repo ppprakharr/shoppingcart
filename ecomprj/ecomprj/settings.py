@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'core',
     'jazzmin',
     'userauths',
+    'useradmin',
     'ckeditor',
     'paypal.standard.ipn',
 ]

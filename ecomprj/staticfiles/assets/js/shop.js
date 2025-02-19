@@ -1,102 +1,76 @@
-(function($) {
-    'use strict';
-    /*Product Details*/
-    var productDetails = function() {
-        $('.product-image-slider').slick({
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            arrows: false,
-            fade: false,
-            asNavFor: '.slider-nav-thumbnails',
+(function ($) {
+    "use strict";
+
+    // Ensure jQuery and Slick exist before running
+    if (typeof $ === "undefined") {
+        console.error("jQuery is not loaded!");
+        return;
+    }
+
+    if (typeof $.fn.slick === "undefined") {
+        console.error("Slick is not loaded!");
+        return;
+    }
+
+    /* Product Details */
+    var productDetails = function () {
+        if ($(".product-image-slider").length) {
+            $(".product-image-slider").slick({
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                arrows: false,
+                fade: false,
+                asNavFor: ".slider-nav-thumbnails",
+            });
+        }
+
+        if ($(".slider-nav-thumbnails").length) {
+            $(".slider-nav-thumbnails").slick({
+                slidesToShow: 4,
+                slidesToScroll: 1,
+                asNavFor: ".product-image-slider",
+                dots: false,
+                focusOnSelect: true,
+                prevArrow:
+                    '<button type="button" class="slick-prev"><i class="fi-rs-arrow-small-left"></i></button>',
+                nextArrow:
+                    '<button type="button" class="slick-next"><i class="fi-rs-arrow-small-right"></i></button>',
+            });
+        }
+
+        // On before slide change, match active thumbnail to current slide
+        $(".product-image-slider").on("beforeChange", function (event, slick, currentSlide, nextSlide) {
+            $(".slider-nav-thumbnails .slick-slide").removeClass("slick-active");
+            $(".slider-nav-thumbnails .slick-slide").eq(nextSlide).addClass("slick-active");
         });
 
-        $('.slider-nav-thumbnails').slick({
-            slidesToShow: 4,
-            slidesToScroll: 1,
-            asNavFor: '.product-image-slider',
-            dots: false,
-            focusOnSelect: true,
-
-            prevArrow: '<button type="button" class="slick-prev"><i class="fi-rs-arrow-small-left"></i></button>',
-            nextArrow: '<button type="button" class="slick-next"><i class="fi-rs-arrow-small-right"></i></button>'
-        });
-
-        // Remove active class from all thumbnail slides
-        $('.slider-nav-thumbnails .slick-slide').removeClass('slick-active');
-
-        // Set active class to first thumbnail slides
-        $('.slider-nav-thumbnails .slick-slide').eq(0).addClass('slick-active');
-
-        // On before slide change match active thumbnail to current slide
-        $('.product-image-slider').on('beforeChange', function(event, slick, currentSlide, nextSlide) {
-            var mySlideNumber = nextSlide;
-            $('.slider-nav-thumbnails .slick-slide').removeClass('slick-active');
-            $('.slider-nav-thumbnails .slick-slide').eq(mySlideNumber).addClass('slick-active');
-        });
-
-        $('.product-image-slider').on('beforeChange', function(event, slick, currentSlide, nextSlide) {
-            var img = $(slick.$slides[nextSlide]).find("img");
-            $('.zoomWindowContainer,.zoomContainer').remove();
-            if ($(window).width() > 768) {
-                $(img).elevateZoom({
-                    zoomType: "inner",
-                    cursor: "crosshair",
-                    zoomWindowFadeIn: 500,
-                    zoomWindowFadeOut: 750
-                });
-            }
-        });
         //Elevate Zoom
         if ($(".product-image-slider").length) {
             if ($(window).width() > 768) {
-                $('.product-image-slider .slick-active img').elevateZoom({
+                $(".product-image-slider .slick-active img").elevateZoom({
                     zoomType: "inner",
                     cursor: "crosshair",
                     zoomWindowFadeIn: 500,
-                    zoomWindowFadeOut: 750
+                    zoomWindowFadeOut: 750,
                 });
             }
         }
-        //Filter color/Size
-        $('.list-filter').each(function() {
-            $(this).find('a').on('click', function(event) {
-                event.preventDefault();
-                $(this).parent().siblings().removeClass('active');
-                $(this).parent().toggleClass('active');
-                $(this).parents('.attr-detail').find('.current-size').text($(this).text());
-                $(this).parents('.attr-detail').find('.current-color').text($(this).attr('data-color'));
-            });
-        });
-        //Qty Up-Down
-        $('.detail-qty').each(function() {
-            var qtyval = parseInt($(this).find(".qty-val").val(), 10);
-
-            $('.qty-up').on('click', function(event) {
-                event.preventDefault();
-                qtyval = qtyval + 1;
-                $(this).prev().val(qtyval);
-            });
-
-            $(".qty-down").on("click", function(event) {
-                event.preventDefault();
-                qtyval = qtyval - 1;
-                if (qtyval > 1) {
-                    $(this).next().val(qtyval);
-                } else {
-                    qtyval = 1;
-                    $(this).next().val(qtyval);
-                }
-            });
-        });
-
-        $('.dropdown-menu .cart_list').on('click', function(event) {
-            event.stopPropagation();
-        });
     };
 
-    //Load functions
-    $(document).ready(function() {
+    // Run functions after document is ready
+    $(document).ready(function () {
         productDetails();
     });
 
 })(jQuery);
+document.addEventListener("DOMContentLoaded", function () {
+    var triggerTabList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tab"]'));
+    triggerTabList.forEach(function (tab) {
+        tab.addEventListener("click", function (event) {
+            event.preventDefault();
+            var tabInstance = new bootstrap.Tab(this);
+            tabInstance.show();
+        });
+    });
+});
+
