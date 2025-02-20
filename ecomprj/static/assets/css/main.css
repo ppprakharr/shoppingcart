@@ -2726,6 +2726,10 @@ input.qty-val {
     border: 0;
     margin-bottom: 4px;
 }
+.navbar-aside {
+    background-color: #f5f5f5; /* Light gray to check if CSS applies */
+    padding: 20px;
+}
 
 .nav-tabs .nav-link {
     background-color: #eeeeee;

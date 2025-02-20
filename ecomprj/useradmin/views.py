@@ -25,6 +25,17 @@ def dashboard(request):
     }
     return render(request,'useradmin/dashboard.html',context)
 
+def products(request):
+    products = Product.objects.all()
+    category=Category.objects.all()
+
+    context={
+        'products':products,
+        'category':category
+    }
+
+    return render(request,'useradmin/products.html',context)
+
 
 
 # Create your views here.

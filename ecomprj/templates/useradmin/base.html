@@ -12,9 +12,11 @@
     <meta property="og:url" content="" />
     <meta property="og:image" content="" />
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="{%static 'assets/imgs/theme/icons/favicon.svg'%}" />
+    <link rel="shortcut icon" type="image/x-icon" href="{%static 'assets/imgs/theme/favicon.svg'%}" />
     <!-- Template CSS -->
-    <link href="{%static 'assets/css/main.css'%}" rel="stylesheet" type="text/css" />
+    <link href="{%static 'assets/css/main.css' %}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 
 <body>
@@ -31,13 +33,13 @@
         <nav>
             <ul class="menu-aside">
                 <li class="menu-item active">
-                    <a class="menu-link" href="index.html">
+                    <a class="menu-link" href="{% url 'useradmin:dashboard'%}">
                             <i class="icon material-icons md-home"></i>
                             <span class="text">Dashboard</span>
                         </a>
                 </li>
                 <li class="menu-item has-submenu">
-                    <a class="menu-link" href="page-products-list.html">
+                    <a class="menu-link" href="{% url 'useradmin:products'%}">
                             <i class="icon material-icons md-shopping_bag"></i>
                             <span class="text">Products</span>
                         </a>
@@ -119,7 +121,7 @@
                         </a>
                 </li>
             </ul>
-            <hr />
+            <hr>
             <ul class="menu-aside">
                 <li class="menu-item has-submenu">
                     <a class="menu-link" href="#">
@@ -142,21 +144,9 @@
             <br />
         </nav>
     </aside>
-    {% comment %} <main class="main-wrap">
+     <main class="main-wrap">
         <header class="main-header navbar">
             <div class="col-search">
-                <form class="searchform">
-                    <div class="input-group">
-                        <input list="search_terms" type="text" class="form-control" placeholder="Search term" />
-                        <button class="btn btn-light bg" type="button"><i class="material-icons md-search"></i></button>
-                    </div>
-                    <datalist id="search_terms">
-                            <option value="Products"></option>
-                            <option value="New orders"></option>
-                            <option value="Apple iphone"></option>
-                            <option value="Ahmed Hassan"></option>
-                        </datalist>
-                </form>
             </div>
             <div class="col-nav">
                 <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"><i class="material-icons md-apps"></i></button>
@@ -176,14 +166,14 @@
                     <li class="dropdown nav-item">
                         <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage" aria-expanded="false"><i class="material-icons md-public"></i></a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
-                            <a class="dropdown-item text-brand" href="#"><img src="{% static 'assets/imgs/theme/flag-us.png' %}" alt="English" />English</a>
+                            <a class="dropdown-item text-brand" href="#"><img src="{% static 'assets/imgs/theme/icons/flag-us.png' %}" alt="English" />English</a>
                             <a class="dropdown-item" href="#"><img src="{% static 'assets/imgs/theme/flag-fr.png' %}" alt="Français" />Français</a>
-                            <a class="dropdown-item" href="#"><img src="{% static 'assets/imgs/theme/flag-jp.png' %}" alt="Français" />日本語</a>
-                            <a class="dropdown-item" href="#"><img src="{% static 'assets/imgs/theme/flag-cn.png' %}" alt="Français" />中国人</a>
+                            <a class="dropdown-item" href="#"><img src="{% static 'assets/imgs/theme/flag-ru.png' %}" alt="Français" />日本語</a>
+                            <a class="dropdown-item" href="#"><img src="{% static 'assets/imgs/theme/flag-dt.png' %}" alt="Français" />中国人</a>
                         </div>
                     </li>
                     <li class="dropdown nav-item">
-                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle" src="{% static 'assets/imgs/people/avatar-2.png' %}" alt="User" /></a>
+                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle" src="{% static 'assets/imgs/theme/icons/icon-user.svg' %}" alt="User" /></a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
                             <a class="dropdown-item" href="#"><i class="material-icons md-perm_identity"></i>Edit Profile</a>
                             <a class="dropdown-item" href="#"><i class="material-icons md-settings"></i>Account Settings</a>
@@ -197,9 +187,8 @@
                 </ul>
             </div>
         </header>
-        {% comment %} {%block content%}
-        {%endblock content%} {% endcomment %}
-        <!-- content-main end// -->
+        {%block content%}
+        {%endblock content%}
         <footer class="main-footer font-xs">
             <div class="row pb-30 pt-15">
                 <div class="col-sm-6">
@@ -213,9 +202,8 @@
                 </div>
             </div>
         </footer>
-    {% comment %} </main> {% endcomment %} 
-    {%block content%}
-    {%endblock content%}
+    </main> 
+
 <!-- Cloudflare Email Decoder (No direct CDN alternative) -->
 <!-- Consider removing this unless needed -->
 
