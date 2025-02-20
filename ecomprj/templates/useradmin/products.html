@@ -1,7 +1,7 @@
 {%extends 'useradmin/base.html'%}
 {%load static%}
 {%block content%}
-        <main class="main-wrap">
+        <main class="main-wrap" id='product-list'>
             <header class="main-header navbar">
                 <div class="col-search">
                     <form class="searchform">
@@ -90,8 +90,8 @@
                                     <span>{{p.date|date:'d.m.Y'}}</span>
                                 </div>
                                 <div class="col-lg-2 col-sm-2 col-4 col-action text-end">
-                                    <a href="#" class="btn btn-sm font-sm rounded btn-brand"> <i class="material-icons md-edit"></i> Edit </a>
-                                    <a href="#" class="btn btn-sm font-sm btn-light rounded"> <i class="material-icons md-delete_forever"></i> Delete </a>
+                                    <a href="{%url 'useradmin:edit_product' p.pid%}" class="btn btn-sm font-sm rounded btn-brand"> <i class="material-icons md-edit"></i> Edit </a>
+                                    <button id='delete-button' class="btn btn-sm font-sm btn-light rounded" data-button-id='{{p.id}}'> <i class="fas fa-trash"></i> Delete </button>
                                 </div>
                             </div>
                             <!-- row .// -->

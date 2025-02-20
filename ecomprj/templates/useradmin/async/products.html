@@ -1,0 +1,37 @@
+{% for p in products %}
+<article class="itemlist">
+    <div class="row align-items-center">
+        <div class="col-lg-4 col-sm-4 col-8 flex-grow-1 col-name">
+            <a class="itemside" href="#">
+                <div class="left">
+                    <img src="{{ p.image.url }}" class="img-sm img-thumbnail" width="100px" height="100px" alt="Item" />
+                </div>
+                <div class="info">
+                    <h6 class="mb-0">{{ p.title }}</h6>
+                </div>
+            </a>
+        </div>
+        <div class="col-lg-2 col-sm-2 col-4 col-price">
+            <span>${{ p.price|floatformat:2 }}</span>
+        </div>
+        <div class="col-lg-2 col-sm-2 col-4 col-status">
+            {% if p.in_stock %}
+            <span class="badge rounded-pill alert-success">Active</span>
+            {% else %}
+            <span class="badge rounded-pill alert-warning">Out Of Stock</span>
+            {% endif %}
+        </div>
+        <div class="col-lg-1 col-sm-2 col-4 col-date">
+            <span>{{ p.date|date:'d.m.Y' }}</span>
+        </div>
+        <div class="col-lg-2 col-sm-2 col-4 col-action text-end">
+            <a href="{% url 'useradmin:edit_product' p.pid %}" class="btn btn-sm font-sm rounded btn-brand">
+                <i class="material-icons md-edit"></i> Edit
+            </a>
+            <button id="delete-button" class="btn btn-sm font-sm btn-light rounded" data-button-id="{{ p.id }}">
+                <i class="fas fa-trash"></i> Delete
+            </button>
+        </div>
+    </div>
+</article>
+{% endfor %}

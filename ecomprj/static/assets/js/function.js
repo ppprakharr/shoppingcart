@@ -352,3 +352,28 @@ $(document).on('submit','#contact-form-ajax',function(e){
 
     })
 })
+
+
+//delete product vendor site
+$(document).on('click','#delete-button',function(e){
+    e.preventDefault()
+    let product_id = $(this).attr('data-button-id')
+    let this_val=$(this)
+    console.log('delete-product-id',product_id)
+    $.ajax({
+        url: '/useradmin/delete_product',
+        data:{
+            'id':product_id
+        },
+        dataType: 'json',
+        beforeSend: function(){
+            this_val.hide()
+        },
+        success: function(response){
+            this_val.show()
+            console.log('deleted product')
+            console.log('response',response)
+            $('#product-list').html(response.data)
+        }
+    })
+}) 

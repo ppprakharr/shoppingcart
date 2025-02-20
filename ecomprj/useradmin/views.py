@@ -4,6 +4,8 @@ from core.models import Category, CartOrder, Product
 from django.db.models import Sum
 from useradmin.forms import AddProductForm
 import datetime
+from django.template.loader import render_to_string
+from django.http import JsonResponse
 
 def dashboard(request):
     revenue = CartOrder.objects.aggregate(price=Sum('price'))
@@ -52,7 +54,34 @@ def add_product_view(request):
     context={'form':form}
     return render(request,'useradmin/add-product.html',context)
 
-            
+def edit_product_view(request,pid):
+    product = Product.objects.get(pid=pid)
+    if request.method=='POST':
+        form = AddProductForm(request.POST,request.FILES,instance=product)
+        if form.is_valid():
+            new_form = form.save(commit=False)
+            new_form.user=request.user
+            new_form.save()
+            form.save_m2m()
+            return redirect('useradmin:products')
+    else:
+        form=AddProductForm(instance=product)
+    context={
+             'product':product,
+             'form':form}
+    return render(request,'useradmin/edit-product.html',context)
 
 
-# Create your views here.
+def delete_product_view(request):
+    id=request.GET['id']
+    product = Product.objects.get(id=id)
+    product.delete()
+    products  = Product.objects.all()
+    context={
+        'products':products,
+        'bool':True}
+    
+    data = render_to_string('useradmin/async/products.html',context)
+    
+
+    return JsonResponse({'data':data})
