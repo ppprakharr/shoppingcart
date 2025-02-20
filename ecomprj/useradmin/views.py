@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from userauths.models import User
-from core.models import Category, CartOrder, Product
+from core.models import Category, CartOrder, Product, CartOrderItems
 from django.db.models import Sum
 from useradmin.forms import AddProductForm
 import datetime
@@ -85,3 +85,20 @@ def delete_product_view(request):
     
 
     return JsonResponse({'data':data})
+
+def orders_view(request):
+    orders = CartOrder.objects.all()
+    context={
+        'orders':orders
+                }
+    return render(request,'useradmin/orders.html',context)
+
+def order_details_view(request,id):
+    order=CartOrder.objects.get(id=id)
+    cart_order = CartOrderItems.objects.filter(order=order)
+    context={
+        'order':order,
+        'cart_order':cart_order
+        }
+    
+    return render(request,'useradmin/order-details.html',context)
