@@ -9,7 +9,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.template.loader import render_to_string
 from django.http import JsonResponse
+from useradmin.decorators import admin_required
 
+@admin_required
 def dashboard(request):
     revenue = CartOrder.objects.aggregate(price=Sum('price'))
     total_orders_count = CartOrder.objects.count()
@@ -31,6 +33,7 @@ def dashboard(request):
     }
     return render(request,'useradmin/dashboard.html',context)
 
+@admin_required
 def products(request):
     products = Product.objects.all()
     category=Category.objects.all()
@@ -42,7 +45,7 @@ def products(request):
 
     return render(request,'useradmin/products.html',context)
 
-
+@admin_required
 def add_product_view(request):
     if request.method=='POST':
         form = AddProductForm(request.POST,request.FILES)
@@ -57,6 +60,8 @@ def add_product_view(request):
     context={'form':form}
     return render(request,'useradmin/add-product.html',context)
 
+
+@admin_required
 def edit_product_view(request,pid):
     product = Product.objects.get(pid=pid)
     if request.method=='POST':
@@ -74,7 +79,7 @@ def edit_product_view(request,pid):
              'form':form}
     return render(request,'useradmin/edit-product.html',context)
 
-
+@admin_required
 def delete_product_view(request):
     id=request.GET['id']
     product = Product.objects.get(id=id)
@@ -89,6 +94,8 @@ def delete_product_view(request):
 
     return JsonResponse({'data':data})
 
+
+@admin_required
 def orders_view(request):
     orders = CartOrder.objects.all()
     context={
@@ -96,6 +103,8 @@ def orders_view(request):
                 }
     return render(request,'useradmin/orders.html',context)
 
+
+@admin_required
 def order_details_view(request,id):
     order=CartOrder.objects.get(id=id)
     cart_order = CartOrderItems.objects.filter(order=order)
@@ -106,6 +115,8 @@ def order_details_view(request,id):
     
     return render(request,'useradmin/order-details.html',context)
 
+
+@admin_required
 def change_order_status_view(request,oid):
     if request.method=='POST':
         status = request.POST['status']
@@ -115,7 +126,8 @@ def change_order_status_view(request,oid):
         messages.success(request,'Order status changed successfully')
         return redirect('useradmin:order_details',id=order.id)
     
-@login_required    
+
+@admin_required  
 def vendor_page_view(request):
     vendor = Vendor.objects.filter(user=request.user).first()
     total_revenue=CartOrderItems.objects.filter(vendor=vendor,order__paid_status=True).aggregate(total=Sum('total'))
@@ -129,6 +141,8 @@ def vendor_page_view(request):
     }
     return render(request,'useradmin/vendor-page.html',context)
 
+
+@admin_required
 def review_page_view(request):
     vendor = Vendor.objects.filter(user=request.user).first()
     products = Product.objects.filter(vendor=vendor)
@@ -138,14 +152,14 @@ def review_page_view(request):
     return render(request,'useradmin/review-page.html',context)
 
 
-@login_required
+@admin_required
 def settings_view(request):
     profile = Profile.objects.get(user=request.user) 
     context={'profile':profile}
     return render(request,'useradmin/settings.html',context)
 
 
-@login_required
+@admin_required
 def update_profile_view(request):
     profile = Profile.objects.get(user=request.user)
     if (request.method=='POST'):
@@ -163,6 +177,8 @@ def update_profile_view(request):
         messages.success(request,'Profile updated successfully')
         return redirect('useradmin:settings')
     
+
+@admin_required    
 @login_required
 def change_password_view(request):
     if request.method=='POST':
