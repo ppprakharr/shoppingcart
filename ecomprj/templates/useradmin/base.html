@@ -98,8 +98,8 @@
             <hr>
             <ul class="menu-aside">
                 <li class="menu-item has-submenu">
-                    <a class="menu-link" href="#">
-                            <i class="icon material-icons md-settings"></i>
+                    <a class="menu-link" href="{% url 'useradmin:settings'%}">
+                            <i class="fas fa-gear"></i>
                             <span class="text">Settings</span>
                         </a>
                     <div class="submenu">
@@ -118,6 +118,18 @@
             <br />
         </nav>
     </aside>
+    {% if messages %}
+                {% for message in messages%}
+                <div class="alert alert-{{message.tags}}">
+                    <strong>{{message}}</strong>
+                </div>
+                {%endfor%}
+                {% endif %}
+                <script>
+                    setTimeout (()=>{
+                        $(".alert").alert("close");
+                    },3000)
+                </script>
      <main class="main-wrap">
         <header class="main-header navbar">
             <div class="col-search">

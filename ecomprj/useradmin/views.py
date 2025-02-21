@@ -4,6 +4,7 @@ from core.models import Category, CartOrder, Product, CartOrderItems,Vendor,Prod
 from django.db.models import Sum
 from useradmin.forms import AddProductForm
 import datetime
+from django.contrib.auth.hashers import check_password
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.template.loader import render_to_string
@@ -161,4 +162,27 @@ def update_profile_view(request):
         profile.save()
         messages.success(request,'Profile updated successfully')
         return redirect('useradmin:settings')
+    
+@login_required
+def change_password_view(request):
+    if request.method=='POST':
+        current_password = request.POST['current_pwd']
+        new_password = request.POST['new_pwd']
+        confirm_password = request.POST['confirm_pwd']
+        if new_password != confirm_password:
+            messages.error(request,'New password and confirm password does not match')
+            return redirect('useradmin:password_change')
+        if check_password(current_password,request.user.password):
+            request.user.set_password(new_password)
+            request.user.save()
+            messages.success(request,'Password changed successfully')
+            return redirect('useradmin:password_change')
+        else:
+            messages.error(request,'Current password is incorrect')
+            return redirect('useradmin:password_change')
+        
+    else:
+        return render(request,'useradmin/change-password.html')
+
+
 
