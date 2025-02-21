@@ -180,7 +180,7 @@ class CartOrderItems(models.Model):
         return mark_safe(f'<img src="{self.image.url}" width="50" height="50" />')
     
 class ProductReview(models.Model):
-    user=models.ForeignKey(User,on_delete=models.SET_NULL,null=True)
+    user=models.ForeignKey(User,on_delete=models.SET_NULL,null=True,related_name='reviews')
     product = models.ForeignKey(Product,on_delete=models.CASCADE, related_name='reviews')
     review = models.TextField()
     rating = models.IntegerField(choices=RATING,default=0)

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from userauths.models import User
-from core.models import Category, CartOrder, Product, CartOrderItems,Vendor
+from core.models import Category, CartOrder, Product, CartOrderItems,Vendor,ProductReview
 from django.db.models import Sum
 from useradmin.forms import AddProductForm
 import datetime
@@ -127,5 +127,13 @@ def vendor_page_view(request):
         'products':products
     }
     return render(request,'useradmin/vendor-page.html',context)
+
+def review_page_view(request):
+    vendor = Vendor.objects.filter(user=request.user).first()
+    products = Product.objects.filter(vendor=vendor)
+    reviews = ProductReview.objects.filter(product__in=products)
+    context={'products':products
+             ,'reviews':reviews}
+    return render(request,'useradmin/review-page.html',context)
 
 
