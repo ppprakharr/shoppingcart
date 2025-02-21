@@ -4,6 +4,7 @@ from core.models import Category, CartOrder, Product, CartOrderItems
 from django.db.models import Sum
 from useradmin.forms import AddProductForm
 import datetime
+from django.contrib import messages
 from django.template.loader import render_to_string
 from django.http import JsonResponse
 
@@ -102,3 +103,14 @@ def order_details_view(request,id):
         }
     
     return render(request,'useradmin/order-details.html',context)
+
+def change_order_status_view(request,oid):
+    if request.method=='POST':
+        status = request.POST['status']
+        order=CartOrder.objects.get(oid=oid)
+        order.product_status = status
+        order.save()
+        messages.success(request,'Order status changed successfully')
+        return redirect('useradmin:order_details',id=order.id)
+
+
