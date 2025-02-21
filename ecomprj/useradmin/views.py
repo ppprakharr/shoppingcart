@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from userauths.models import User
-from core.models import Category, CartOrder, Product, CartOrderItems
+from core.models import Category, CartOrder, Product, CartOrderItems,Vendor
 from django.db.models import Sum
 from useradmin.forms import AddProductForm
 import datetime
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.template.loader import render_to_string
 from django.http import JsonResponse
@@ -112,5 +113,19 @@ def change_order_status_view(request,oid):
         order.save()
         messages.success(request,'Order status changed successfully')
         return redirect('useradmin:order_details',id=order.id)
+    
+@login_required    
+def vendor_page_view(request):
+    vendor = Vendor.objects.filter(user=request.user).first()
+    total_revenue=CartOrderItems.objects.filter(vendor=vendor,order__paid_status=True).aggregate(total=Sum('total'))
+    total_orders = CartOrderItems.objects.filter(vendor=vendor).aggregate(sales=Sum('qty'))
+    products = Product.objects.filter(vendor=vendor,status=True)
+    context={
+        'vendor':vendor,
+        'total_revenue':total_revenue,
+        'total_orders':total_orders,
+        'products':products
+    }
+    return render(request,'useradmin/vendor-page.html',context)
 
 

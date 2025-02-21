@@ -160,7 +160,8 @@ def add_cart_view(request):
         'quantity':request.GET['quantity'],
         'price':request.GET['price'],
         'pid':request.GET['pid'],
-        'image': request.GET['image']
+        'image': request.GET['image'],
+        'vendor':request.GET['vendor']
     }
 
     if 'cart_data_obj' in request.session:
@@ -277,6 +278,7 @@ def save_checkout_info_view(request):
                 image = item['image'],
                 qty = item['quantity'],
                 price=item['price'],
+                vendor=item['vendor'],
                 total=int(item['quantity'])*float(item['price'])
             )
         return redirect('core:checkout',order.oid)

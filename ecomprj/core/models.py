@@ -165,6 +165,7 @@ class CartOrder(models.Model):
         verbose_name_plural  = 'Cart order'
 
 class CartOrderItems(models.Model):
+    vendor = models.ForeignKey(Vendor,null=True,blank=True,on_delete=models.SET_NULL)
     order = models.ForeignKey(CartOrder,on_delete=models.CASCADE)
     invoice_no = models.CharField(max_length=200)
     item=models.CharField(max_length=200)

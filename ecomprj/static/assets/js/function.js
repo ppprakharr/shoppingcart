@@ -154,6 +154,7 @@ $('.add-to-cart-btn').on('click', function(){
     let product_price = $('.current-product-price-'+index).text()
     let product_pid = $('.product-pid-'+index).val()
     let product_image = $('.product-image-'+index).val()
+    let product_vendor = $('.product-vendor-'+index).val()
     console.log('qty',product_qty)
     console.log('title',product_title)
     console.log('id',product_id)
@@ -171,6 +172,7 @@ $('.add-to-cart-btn').on('click', function(){
             'price': product_price,
             'pid':product_pid,
             'image': product_image,
+            'vendor':product_vendor
         },
         dataType: 'json',
         beforeSend: function(){
