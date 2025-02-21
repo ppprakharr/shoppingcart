@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from userauths.models import User
+from userauths.models import User, Profile
 from core.models import Category, CartOrder, Product, CartOrderItems,Vendor,ProductReview
 from django.db.models import Sum
 from useradmin.forms import AddProductForm
@@ -136,4 +136,29 @@ def review_page_view(request):
              ,'reviews':reviews}
     return render(request,'useradmin/review-page.html',context)
 
+
+@login_required
+def settings_view(request):
+    profile = Profile.objects.get(user=request.user) 
+    context={'profile':profile}
+    return render(request,'useradmin/settings.html',context)
+
+
+@login_required
+def update_profile_view(request):
+    profile = Profile.objects.get(user=request.user)
+    if (request.method=='POST'):
+        full_name = request.POST['full_name']
+        bio = request.POST['bio']
+        mobile = request.POST['mobile']
+        image = request.FILES['image']
+        username=request.POST['username']
+        profile.full_name = full_name
+        profile.bio = bio
+        profile.mobile = mobile
+        profile.image = image
+        profile.user.username = username
+        profile.save()
+        messages.success(request,'Profile updated successfully')
+        return redirect('useradmin:settings')
 

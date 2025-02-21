@@ -14,6 +14,8 @@ urlpatterns = [
     path('change_order_status/<oid>', views.change_order_status_view, name='change_order_status'),
     path('vendor-page/', views.vendor_page_view, name='vendor_page'),
     path('reviews/', views.review_page_view, name='reviews'),
+    path('settings/',views.settings_view,name='settings'),
+    path('update_profile/',views.update_profile_view,name='update_profile'),
 ]
 
 
