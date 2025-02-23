@@ -154,6 +154,7 @@ $('.add-to-cart-btn').on('click', function(){
     let product_price = $('.current-product-price-'+index).text()
     let product_pid = $('.product-pid-'+index).val()
     let product_image = $('.product-image-'+index).val()
+    let product_vendor = $('.product-vendor-'+index).val()
     console.log('qty',product_qty)
     console.log('title',product_title)
     console.log('id',product_id)
@@ -171,6 +172,7 @@ $('.add-to-cart-btn').on('click', function(){
             'price': product_price,
             'pid':product_pid,
             'image': product_image,
+            'vendor':product_vendor
         },
         dataType: 'json',
         beforeSend: function(){
@@ -352,3 +354,28 @@ $(document).on('submit','#contact-form-ajax',function(e){
 
     })
 })
+
+
+//delete product vendor site
+$(document).on('click','#delete-button',function(e){
+    e.preventDefault()
+    let product_id = $(this).attr('data-button-id')
+    let this_val=$(this)
+    console.log('delete-product-id',product_id)
+    $.ajax({
+        url: '/useradmin/delete_product',
+        data:{
+            'id':product_id
+        },
+        dataType: 'json',
+        beforeSend: function(){
+            this_val.hide()
+        },
+        success: function(response){
+            this_val.show()
+            console.log('deleted product')
+            console.log('response',response)
+            $('#product-list').html(response.data)
+        }
+    })
+}) 
