@@ -154,6 +154,7 @@ def filter_product(request):
     })
 
 def add_cart_view(request):
+    vendor = Vendor.objects.get(id=request.GET['vendor'])
     cart_product={}
     cart_product[str(request.GET['id'])]={
         'title':request.GET['title'],
@@ -161,7 +162,7 @@ def add_cart_view(request):
         'price':request.GET['price'],
         'pid':request.GET['pid'],
         'image': request.GET['image'],
-        'vendor':request.GET['vendor']
+        'vendor':vendor.id
     }
 
     if 'cart_data_obj' in request.session:
@@ -278,7 +279,7 @@ def save_checkout_info_view(request):
                 image = item['image'],
                 qty = item['quantity'],
                 price=item['price'],
-                vendor=item['vendor'],
+                vendor=Vendor.objects.get(id=item['vendor']),
                 total=int(item['quantity'])*float(item['price'])
             )
         return redirect('core:checkout',order.oid)
@@ -318,14 +319,14 @@ def checkout_view(request,oid):
 
 
 @login_required  
-def payment_completed_view(request):
-    cart_total_amount = 0
-    if 'cart_data_obj' in request.session:
-        for p_id, item in request.session['cart_data_obj'].items():
-            cart_total_amount+=int(item['quantity'])*float(item['price'])
-
-        return render(request, 'core/payment-completed.html',{'cart_data':request.session['cart_data_obj'],'totalcartitems':len(request.session['cart_data_obj']),'cart_total_amount':cart_total_amount})
-
+def payment_completed_view(request,oid):
+    order = CartOrder.objects.get(oid=oid)
+    if order.paid_status==False:
+        order.paid_status=True
+        order.save()
+        context={'order':order}
+        return render(request,'core/payment-completed.html',context)
+    
 @login_required
 def payment_failed_view(request):
     return render(request,'core/payment-failed.html')
